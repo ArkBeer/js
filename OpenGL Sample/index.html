@@ -7,9 +7,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.3.2/gl-matrix-min.js"></script>
   <script id="shader-vs" type="x-shader/x-vertex">
     attribute vec4 coords;
+    attribute vec4 colors;
     attribute float pointSize;
     uniform mat4 transformMatrix;
+    varying vec4 vColor;
     void main(){
+      vColor=colors;
       gl_Position=transformMatrix*coords;
       gl_PointSize=pointSize;
     }
@@ -17,6 +20,7 @@
   <script id="shader-fs" type="x-shader/x-fragment">
     precision mediump float;
     uniform vec4 color;
+    varying vec4 vColor;
     void main(){
       gl_FragColor=color;
     }
