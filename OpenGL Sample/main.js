@@ -1,4 +1,4 @@
-let gl, shaderProgram, vertices, vertexCount=30,matrix=mat4.create();
+let gl, shaderProgram, vertices, vertex_colors, vertexCount=30,matrix=mat4.create();
 
 initGL();
 createShaders();
@@ -37,11 +37,22 @@ function createVertices(){
   //gl.vertexAttrib3f(coords, 0, 0, 0);
   gl.vertexAttribPointer(coords, 3, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(coords);
-  //gl.bindBuffer(gl.ARRAY_BUFFER, null);
+  
+  vertex_colors=[];
+  for(let i=0;i<vertexCount;++i){
+    vertex_colors.push(Math.random());
+    vertex_colors.push(Math.random());
+    vertex_colors.push(Math.random());
+    vertex_colors.push(1.0);
+  }
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertex_colors),gl.STATIC_DRAW); //vertex coords.
+  let colors=gl.getAttribLocation(shaderProgram, "colors");
+   gl.vertexAttribPointer(colors, 4, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(colors);
+  
   let pointSize=gl.getAttribLocation(shaderProgram, "pointSize");
   gl.vertexAttrib1f(pointSize, 1);
-  let color=gl.getUniformLocation(shaderProgram, "color");
-  gl.uniform4f(color, 0.5, 1, 0.8, 1);
 }
 
 function draw(){
