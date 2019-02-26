@@ -33,11 +33,12 @@ function createVertices(){
   let buffer=gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, buffer); //vertex color
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices),gl.STATIC_DRAW); //vertex coords.
+
   let coords=gl.getAttribLocation(shaderProgram, "coords");
   //gl.vertexAttrib3f(coords, 0, 0, 0);
   gl.vertexAttribPointer(coords, 3, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(coords);
-  
+  gl.bindBuffer(gl.ARRAY_BUFFER, null);
   vertex_colors=[];
   for(let i=0;i<vertexCount;++i){
     vertex_colors.push(Math.random());
@@ -45,12 +46,13 @@ function createVertices(){
     vertex_colors.push(Math.random());
     vertex_colors.push(1.0);
   }
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+  let buffer2=gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffer2);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertex_colors),gl.STATIC_DRAW); //vertex coords.
   let colors=gl.getAttribLocation(shaderProgram, "colors");
    gl.vertexAttribPointer(colors, 4, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(colors);
-  
+  gl.bindBuffer(gl.ARRAY_BUFFER, null);
   let pointSize=gl.getAttribLocation(shaderProgram, "pointSize");
   gl.vertexAttrib1f(pointSize, 1);
 }
