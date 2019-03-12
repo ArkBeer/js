@@ -30,13 +30,8 @@ function createVertices(){
     vertices.push(Math.random()*2-1);
     vertices.push(Math.random()*2-1);
   }
-  let buffer=gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices),gl.STATIC_DRAW); //vertex coords.
-  let coords=gl.getAttribLocation(shaderProgram, "coords");
-  gl.vertexAttribPointer(coords, 3, gl.FLOAT, false, 0, 0);
-  gl.enableVertexAttribArray(coords);
-  gl.bindBuffer(gl.ARRAY_BUFFER, null);
+  setVertexBuffer(vertices, gl.ARRAY_BUFFER, gl.STATIC_DRAW, "coords", 3);
+  
   vertex_colors=[];
   for(let i=0;i<vertexCount;i+=3){
     //vertex_colors.push(Math.random());
@@ -58,13 +53,7 @@ function createVertices(){
     vertex_colors.push(tmp_b);
     vertex_colors.push(1.0);
   }
-  let buffer2=gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffer2);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertex_colors),gl.STATIC_DRAW); //vertex coords.
-  let colors=gl.getAttribLocation(shaderProgram, "colors");
-   gl.vertexAttribPointer(colors, 4, gl.FLOAT, false, 0, 0);
-  gl.enableVertexAttribArray(colors);
-  gl.bindBuffer(gl.ARRAY_BUFFER, null);
+  setVertexBuffer(vertex_colors, gl.ARRAY_BUFFER, gl.STATIC_DRAW, "colors", 4);
   let pointSize=gl.getAttribLocation(shaderProgram, "pointSize");
   gl.vertexAttrib1f(pointSize, 1);
 }
@@ -78,7 +67,7 @@ function draw(){
 
   gl.bufferSubData(gl.ARRAY_BUFFER, 0, new Float32Array(vertices));
   gl.clear(gl.COLOR_BUFFER_BIT);
-  gl.drawArrays(gl.TRIANGLES, 0, vertexCount);
+  gl.drawArrays(gl.TRIANGLES, 0, vertices.length/3);
   requestAnimationFrame(draw);
 }
 
@@ -111,4 +100,14 @@ function getShader(gl, id){
     return null;
   }
   return shader;
+}
+
+function setVertexBuffer(ArrayBufferView, target, usage, location, index){
+  let buffer=gl.createBuffer();
+  gl.bindBuffer(target, buffer);
+  gl.bufferData(target, new Float32Array(ArrayBufferView),usage); //vertex coords.
+  let coords=gl.getAttribLocation(shaderProgram, location);
+  gl.vertexAttribPointer(coords, index, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(coords);
+  gl.bindBuffer(target, null);
 }
