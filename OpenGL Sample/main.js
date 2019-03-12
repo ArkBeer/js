@@ -31,19 +31,31 @@ function createVertices(){
     vertices.push(Math.random()*2-1);
   }
   let buffer=gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffer); //vertex color
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices),gl.STATIC_DRAW); //vertex coords.
-
   let coords=gl.getAttribLocation(shaderProgram, "coords");
-  //gl.vertexAttrib3f(coords, 0, 0, 0);
   gl.vertexAttribPointer(coords, 3, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(coords);
   gl.bindBuffer(gl.ARRAY_BUFFER, null);
   vertex_colors=[];
-  for(let i=0;i<vertexCount;++i){
-    vertex_colors.push(Math.random());
-    vertex_colors.push(Math.random());
-    vertex_colors.push(Math.random());
+  for(let i=0;i<vertexCount;i+=3){
+    //vertex_colors.push(Math.random());
+    //vertex_colors.push(Math.random());
+    //vertex_colors.push(Math.random());
+    let tmp_r=Math.random();
+    let tmp_g=Math.random();
+    let tmp_b=Math.random();
+    vertex_colors.push(tmp_r);
+    vertex_colors.push(tmp_g);
+    vertex_colors.push(tmp_b);
+    vertex_colors.push(1.0);
+    vertex_colors.push(tmp_r);
+    vertex_colors.push(tmp_g);
+    vertex_colors.push(tmp_b);
+    vertex_colors.push(1.0);
+    vertex_colors.push(tmp_r);
+    vertex_colors.push(tmp_g);
+    vertex_colors.push(tmp_b);
     vertex_colors.push(1.0);
   }
   let buffer2=gl.createBuffer();
